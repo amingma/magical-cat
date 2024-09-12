@@ -5,6 +5,8 @@ class Player(db.Model):
     game_name = db.Column(db.String(120), unique=False, nullable=False)
     tag_line = db.Column(db.String(120), unique=False, nullable=False)
     riot_id = db.Column(db.String(120), unique=True, nullable=False)
+    puuid = db.Column(db.String(120), unique=True, nullable=False)
+    summoner_id = db.Column(db.String(120), unique=True, nullable=False)
     #rank = db.Column(db.string(80), unique=False, nullable=False)
 
     def to_json(self):
@@ -13,5 +15,7 @@ class Player(db.Model):
             "gameName": self.game_name,
             "tagLine": self.tag_line,
             "riotID": self.riot_id,
+            "puuid": self.puuid,
+            "summonerID": self.summoner_id,
             # "rank": self.rank,
         }

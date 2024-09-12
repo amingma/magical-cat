@@ -20,12 +20,19 @@ def create_player():
     riot_id = request.json.get("riotID")
     if not riot_id:
         return (jsonify({"message": "You must specify a riot id"}), 400)
+    print(api_key)
     url = f'https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{game_name}/{tag_line}?api_key={api_key}'
     response = requests.get(url)
     data = response.json()
     if "status" in data:
         return jsonify({"message":"Invalid player tag combination"}), data["status"]["status_code"]
-    new_player = Player(game_name = game_name, tag_line = tag_line, riot_id = riot_id)
+    else:
+        puuid = data["puuid"]
+        url = f'https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/{puuid}?api_key={api_key}'
+        response = requests.get(url)
+        data = response.json()
+        summoner_id = data["id"]
+    new_player = Player(game_name = game_name, tag_line = tag_line, riot_id = riot_id, puuid = puuid, summoner_id = summoner_id)
     try:
         db.session.add(new_player)
         db.session.commit()
