@@ -3,3 +3,5 @@
 /ideas.text
 /env
 /backend/config.py
+/__pycache__
+/backend/__pycache__
