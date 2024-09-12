@@ -1,3 +1,5 @@
 /.env
 /JSONs/spreadsheet-automator-424216-82268ee16b44.json
 /ideas.text
+/env
+/backend/config.py

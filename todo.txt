@@ -1,0 +1,9 @@
+- Write a python script that is able to automatically regenerate Riot
+  API key after every ~24 hours (Selenium)
+- Figure out how to replace existing API key with this new one
+
+- React frontend using axios to fetch data from Riot API
+- Maybe get match history and allow user to paginate through matches while looking at 
+  team, opponent, and overall statistics
+
+- start by keeping a database with gamename, tagline, puuid, summonerid, and rank w/ rank as only publically displayable
