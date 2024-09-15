@@ -23,17 +23,23 @@ export default function PlayerList({players, updateCallback}) {
                 <tr>
                     <th>Player Tag</th>
                     <th>Player Rank</th>
+                    <th>Action</th>
                 </tr>
             </thead>
+            <tbody>
+                {players.map((player)=>(
+                    <tr key={player.id}> 
+                        <td>{player.riotID} </td>
+                        <td>{player.rank}</td>
+                        <td>
+                            <div className="buttonHolder">
+                                <button onClick = {()=>onDelete(player.id)}>Delete</button>
+                                <button>View</button>
+                            </div>
+                        </td>
+                    </tr>
+                ))}
+            </tbody>
         </table>
-        <tbody>
-            {players.map((player)=>(
-                <tr key={player.id}> 
-                    <td>{player.riotID} </td>
-                    <td>Challenger</td>
-                    <td><button onClick = {()=>onDelete(player.id)}>Delete</button></td>
-                </tr>
-            ))}
-        </tbody>
     </div>
 }

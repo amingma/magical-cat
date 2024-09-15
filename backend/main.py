@@ -28,11 +28,22 @@ def create_player():
         return jsonify({"message":"Invalid player tag combination"}), data["status"]["status_code"]
     else:
         puuid = data["puuid"]
+        riot_id = data["gameName"] + "#" + data["tagLine"]
         url = f'https://na1.api.riotgames.com/lol/summoner/v4/summoners/by-puuid/{puuid}?api_key={api_key}'
         response = requests.get(url)
         data = response.json()
         summoner_id = data["id"]
-    new_player = Player(game_name = game_name, tag_line = tag_line, riot_id = riot_id, puuid = puuid, summoner_id = summoner_id)
+        url = f'https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/{summoner_id}?api_key={api_key}'
+        response = requests.get(url)
+        data = response.json()
+        rank = "N/A"
+        for block in data:
+            if block["queueType"] == "RANKED_SOLO_5x5":
+                if block["tier"] == "CHALLENGER" or block["tier"] == "GRANDMASTER" or block["tier"] == "MASTER":
+                    rank = block["tier"]
+                else:
+                    rank = block["tier"] + " " + block["rank"]
+    new_player = Player(riot_id = riot_id, puuid = puuid, summoner_id = summoner_id, rank = rank)
     try:
         db.session.add(new_player)
         db.session.commit()

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import SearchForm from './SearchForm'
 import PlayerList from './PlayerList'
+import './App.css'
 
 function App() {
   const [players, setPlayers] = useState([{"id":1234, "riotID": "blah"}])
