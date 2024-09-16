@@ -6,7 +6,7 @@ import './App.css'
 function App() {
   const [players, setPlayers] = useState([])
   const [curPlayer, setCurPlayer] = useState()
-  const [isViewOpen, setIsViewOpen] = useState(true)
+  const [isViewOpen, setIsViewOpen] = useState(false)
 
   useEffect(()=>{
     fetchPlayers()
@@ -21,13 +21,20 @@ function App() {
   function updateCallback() {
     fetchPlayers();
   }
+
+  async function hitView(id) {
+    const response = await fetch(`http://127.0.0.1:5000/get_player/${id}`)
+    const data = await response.json()
+    setCurPlayer(data.player)
+    setIsViewOpen(true)
+  }
   
   return (
     <>
       <SearchForm updateCallback = {updateCallback}/>
       <div className="main">
-        <PlayerList players = {players} updateCallback = {updateCallback}/>
-        {isViewOpen && <div className="test">Hello</div>}
+        <PlayerList players = {players} updateCallback = {updateCallback} viewFunc = {hitView}/>
+        {isViewOpen && <div className="test">{"Hello " + curPlayer.riotID}</div>}
       </div>
       
     </>

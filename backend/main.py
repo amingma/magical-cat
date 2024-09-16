@@ -13,6 +13,14 @@ def get_players():
     json_players = list(map(lambda x: x.to_json(), players))
     return jsonify({"players": json_players})
 
+@app.route("/get_player/<player_id>", methods=["GET"])
+def get_player(player_id):
+    player = Player.query.get(player_id)
+    if not player:
+        return (jsonify({"message": "Player not found"})), 404
+    json_player = player.to_json()
+    return jsonify({"player": json_player})
+
 @app.route("/create_player", methods=["POST"])
 def create_player():
     game_name = request.json.get('name')
@@ -59,20 +67,6 @@ def delete_player(player_id):
     db.session.delete(player)
     db.session.commit()
     return (jsonify({"message": "Player successfully deleted"}), 200)
-
-@app.route("/get_puuid/<gameName>/<tagLine>")
-def get_puuid(gameName, tagLine):
-    gameName = request.json.get("gameName")
-    tagLine = request.json.get("tagLine")
-    gameNamev2 = ""
-    for i in gameName:
-        if (i==' '):
-            gameNamev2 += "%20"
-        else:
-            gameNamev2 += i
-    link = f"https://americas.api.riotgames.com/riot/account/v1/accounts/by-riot-id/{gameNamev2}/{tagLine}?api_key={api_key}"
-    response = requests.get(link)
-    return response.json()
 
 
 

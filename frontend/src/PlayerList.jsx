@@ -1,4 +1,4 @@
-export default function PlayerList({players, updateCallback}) {
+export default function PlayerList({players, updateCallback, viewFunc}) {
     async function onDelete(id) {
         try {
             const options = {
@@ -34,7 +34,7 @@ export default function PlayerList({players, updateCallback}) {
                         <td>
                             <div className="buttonHolder">
                                 <button onClick = {()=>onDelete(player.id)}>Delete</button>
-                                <button>View</button>
+                                <button onClick = {()=>viewFunc(player.id)}>View</button>
                             </div>
                         </td>
                     </tr>
