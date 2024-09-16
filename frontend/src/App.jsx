@@ -4,7 +4,10 @@ import PlayerList from './PlayerList'
 import './App.css'
 
 function App() {
-  const [players, setPlayers] = useState([{"id":1234, "riotID": "blah"}])
+  const [players, setPlayers] = useState([])
+  const [curPlayer, setCurPlayer] = useState()
+  const [isViewOpen, setIsViewOpen] = useState(true)
+
   useEffect(()=>{
     fetchPlayers()
   }, [])
@@ -22,7 +25,11 @@ function App() {
   return (
     <>
       <SearchForm updateCallback = {updateCallback}/>
-      <PlayerList players = {players} updateCallback = {updateCallback}/>
+      <div className="main">
+        <PlayerList players = {players} updateCallback = {updateCallback}/>
+        {isViewOpen && <div className="test">Hello</div>}
+      </div>
+      
     </>
   )
 }

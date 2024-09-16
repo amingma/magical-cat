@@ -4,7 +4,7 @@ table, th, td {
 }
 
 table {
-    width: 50%;
+    width: 100%;
 }
 
 td {
@@ -21,4 +21,15 @@ td {
 
 button {
     width: fit-content;
+}
+
+div.main {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    
+}
+
+div.test, div.table {
+    width: 50%;
 }

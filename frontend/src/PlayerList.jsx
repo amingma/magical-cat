@@ -16,7 +16,7 @@ export default function PlayerList({players, updateCallback}) {
             alert(error)
         }
     }
-    return <div>
+    return <div className="table">
         <h2>Players</h2>
         <table>
             <thead>
