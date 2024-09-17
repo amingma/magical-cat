@@ -21,6 +21,18 @@ def get_player(player_id):
     json_player = player.to_json()
     return jsonify({"player": json_player})
 
+@app.route("/get_matches/<player_id>", methods=["GET"])
+def get_matches(player_id):
+    player = Player.query.get(player_id)
+    if not player:
+        return jsonify({"message": "Player not found"}), 404
+    json_player = player.to_json()
+    puuid = json_player["puuid"]
+    url = f'https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?start=0&count=20&api_key={api_key}'
+    response = requests.get(url)
+    data = response.json()
+    return data
+
 @app.route("/create_player", methods=["POST"])
 def create_player():
     game_name = request.json.get('name')
