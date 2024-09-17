@@ -19,7 +19,7 @@ function App() {
   }
 
   function updateCallback() {
-    fetchPlayers();
+    fetchPlayers()
   }
 
   async function hitView(id) {
@@ -28,12 +28,21 @@ function App() {
     setCurPlayer(data.player)
     setIsViewOpen(true)
   }
+
+  function hitHide() {
+    setIsViewOpen(false)
+    setCurPlayer()
+  }
   
   return (
     <>
       <SearchForm updateCallback = {updateCallback}/>
       <div className="main">
-        <PlayerList players = {players} updateCallback = {updateCallback} viewFunc = {hitView}/>
+        <PlayerList players = {players} 
+                    updateCallback = {updateCallback} 
+                    viewFunc = {hitView}
+                    curPlayer = {curPlayer}
+                    hideFunc = {hitHide}/>
         {isViewOpen && <div className="test">{"Hello " + curPlayer.riotID}</div>}
       </div>
       
