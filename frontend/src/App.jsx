@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import SearchForm from './SearchForm'
 import PlayerList from './PlayerList'
+import MatchHist from './MatchHist'
 import './App.css'
 
 function App() {
@@ -43,7 +44,13 @@ function App() {
                     viewFunc = {hitView}
                     curPlayer = {curPlayer}
                     hideFunc = {hitHide}/>
-        {isViewOpen && <div className="test">{"Hello " + curPlayer.riotID}</div>}
+        {isViewOpen && 
+          <div className='test'>
+            {console.log(curPlayer)}
+            <div>{"Hello " + curPlayer.riotID}</div>
+            <MatchHist player={curPlayer}/>
+          </div>
+        }
       </div>
       
     </>
