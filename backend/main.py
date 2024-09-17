@@ -31,7 +31,7 @@ def get_matches(player_id):
     url = f'https://americas.api.riotgames.com/lol/match/v5/matches/by-puuid/{puuid}/ids?start=0&count=20&api_key={api_key}'
     response = requests.get(url)
     data = response.json()
-    return data
+    return jsonify({"matches": data}), 200
 
 @app.route("/create_player", methods=["POST"])
 def create_player():

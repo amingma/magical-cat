@@ -10,7 +10,7 @@ export default function MatchHist({player}) {
             }
             const response = await fetch(`http://127.0.0.1:5000/get_matches/${player.id}`, options)
             const data = await response.json()
-            console.log(data)
+            console.log(data.matches)
         }
         catch (error) {
             alert(error)
