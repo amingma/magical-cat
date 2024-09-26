@@ -21,10 +21,25 @@ export default function MatchHist({player}) {
     useEffect(()=>{
         queryMatches()
     }, [player])
+
+    function goPrevMatch() {
+        setCurMatchIdx(curMatchIdx - 1);
+    }
+
+    function goNextMatch() {
+        setCurMatchIdx(curMatchIdx + 1);
+    }
+
     return (
         <>
             {player && 
-            <div>{"You are currently " + player.rank}</div>}
+            <div>
+                <div>{"You are currently " + player.rank}</div>
+                <div>{"Current match: " + matches[curMatchIdx]}</div>
+                <div>{curMatchIdx!=0 && <button onClick={()=>goPrevMatch()}>Prev Match</button>} 
+                     {curMatchIdx!=matches.length-1 && <button onClick={()=>goNextMatch()}>Next Match</button>}
+                </div>    
+            </div>}
         </>
     )
 }
