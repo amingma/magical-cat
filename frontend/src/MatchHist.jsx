@@ -1,8 +1,8 @@
-import {useState} from "react"
+import {useState, useEffect} from "react"
 
 export default function MatchHist({player}) {
     const [matches, setMatches] = useState([])
-
+    const [curMatchIdx, setCurMatchIdx]  = useState()
     async function queryMatches() {
         try {
             const options = {
@@ -11,12 +11,16 @@ export default function MatchHist({player}) {
             const response = await fetch(`http://127.0.0.1:5000/get_matches/${player.id}`, options)
             const data = await response.json()
             console.log(data.matches)
+            setMatches(data.matches)
+            setCurMatchIdx(0)
         }
         catch (error) {
             alert(error)
         }
     }
-    queryMatches()
+    useEffect(()=>{
+        queryMatches()
+    }, [player])
     return (
         <>
             {player && 
