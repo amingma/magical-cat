@@ -80,7 +80,21 @@ def delete_player(player_id):
     db.session.commit()
     return (jsonify({"message": "Player successfully deleted"}), 200)
 
-
+@app.route("/find_champ/<player_id>/<match_id>", methods=["GET"])
+def find_champ(player_id, match_id):
+    player = Player.query.get(player_id)
+    if not player:
+        return (jsonify({"message": "Player not found"})), 404
+    json_player = player.to_json()
+    puuid = json_player["puuid"]
+    url = f'https://americas.api.riotgames.com/lol/match/v5/matches/{match_id}?api_key={api_key}'
+    response = requests.get(url)
+    data = response.json()
+    participant_list = data['metadata']['participants']
+    for i in range(10):
+        if participant_list[i] == puuid:
+            player_idx = i
+    return jsonify({"champion": data['info']['participants'][player_idx]['championName']}), 200
 
 if __name__ == "__main__":
     with app.app_context():
