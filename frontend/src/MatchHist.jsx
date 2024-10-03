@@ -25,11 +25,9 @@ export default function MatchHist({player}) {
             const options = {
                 'method':'GET'
             }
-            const response = await fetch(`http://127.0.0.1:5000/get_matches/${player.id}`, options)
+            const response = await fetch(`http://127.0.0.1:5000/find_champ/${player.id}/${matches[curMatchIdx]}`, options)
             const data = await response.json()
-            console.log(data.matches)
-            setMatches(data.matches)
-            setCurMatchIdx(0)
+            setCurChamp(data["champion"])
         }
         catch (error) {
             alert(error)
@@ -41,8 +39,8 @@ export default function MatchHist({player}) {
     }, [player])
 
     useEffect(()=>{
-        
-    }, curMatchIdx)
+        findChamp()
+    }, [player, curMatchIdx])
 
     function goPrevMatch() {
         setCurMatchIdx(curMatchIdx - 1);
@@ -61,6 +59,7 @@ export default function MatchHist({player}) {
                 <div>{curMatchIdx!=0 && <button onClick={()=>goPrevMatch()}>Prev Match</button>} 
                      {curMatchIdx!=matches.length-1 && <button onClick={()=>goNextMatch()}>Next Match</button>}
                 </div>    
+                <div>{"Current champ: " + curChamp}</div>
             </div>}
         </>
     )

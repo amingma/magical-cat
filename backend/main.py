@@ -110,7 +110,6 @@ def find_champ(player_id, match_id):
 
 @app.route("/update_player/<player_id>", methods=["PATCH"])
 def update_player(player_id):
-    print("hi")
     player = Player.query.get(player_id)
     if not player:
         return (jsonify({"message": "Player not found"})), 404
