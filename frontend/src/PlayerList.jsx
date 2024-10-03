@@ -22,7 +22,13 @@ export default function PlayerList({players, updateCallback, viewFunc, curPlayer
             const options = {
                 "method": "PATCH"
             }
-            const response = await fetch()
+            const response = await fetch(`http://127.0.0.1:5000/update_player/${id}`, options)
+            if (response.status === 200) {
+                updateCallback()
+            }
+            else {
+                console.error('Failed to delete')
+            }
         }
         catch(error) {
             alert(error)
@@ -49,7 +55,7 @@ export default function PlayerList({players, updateCallback, viewFunc, curPlayer
                                 <button onClick = {()=>onDelete(player.id)}>Delete</button>
                                 {curPlayer?
                                 (curPlayer.id==player.id?<button onClick = {()=>hideFunc()}>Hide</button>:<button onClick = {()=>viewFunc(player.id)}>View</button>):<button onClick = {()=>viewFunc(player.id)}>View</button>}
-                                <button>Refresh</button>
+                                <button onClick={()=>onRefresh(player.id)}>Refresh</button>
                             </div>
                         </td>
                     </tr>
