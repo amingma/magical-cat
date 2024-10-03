@@ -6,4 +6,4 @@
 /__pycache__
 /backend/__pycache__
 /backend/instance
-/frontend/src/assets/champion
+/frontend/public/champion

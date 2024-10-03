@@ -60,6 +60,11 @@ export default function MatchHist({player}) {
                      {curMatchIdx!=matches.length-1 && <button onClick={()=>goNextMatch()}>Next Match</button>}
                 </div>    
                 <div>{"Current champ: " + curChamp}</div>
+                {curChamp && 
+                    <div>
+                        <img src={`./champion/${curChamp}.png`} alt="Champion icon" />
+                    </div>
+                }
             </div>}
         </>
     )
