@@ -16,6 +16,19 @@ export default function PlayerList({players, updateCallback, viewFunc, curPlayer
             alert(error)
         }
     }
+
+    async function onRefresh(id) {
+        try {
+            const options = {
+                "method": "PATCH"
+            }
+            const response = await fetch()
+        }
+        catch(error) {
+            alert(error)
+        }
+    }
+
     return <div className="table">
         <h2>Players</h2>
         <table>
@@ -36,6 +49,7 @@ export default function PlayerList({players, updateCallback, viewFunc, curPlayer
                                 <button onClick = {()=>onDelete(player.id)}>Delete</button>
                                 {curPlayer?
                                 (curPlayer.id==player.id?<button onClick = {()=>hideFunc()}>Hide</button>:<button onClick = {()=>viewFunc(player.id)}>View</button>):<button onClick = {()=>viewFunc(player.id)}>View</button>}
+                                <button>Refresh</button>
                             </div>
                         </td>
                     </tr>
