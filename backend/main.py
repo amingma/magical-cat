@@ -11,14 +11,18 @@ def get_db_info(puuid):
     url = f'https://na1.api.riotgames.com/lol/league/v4/entries/by-summoner/{summoner_id}?api_key={api_key}'
     response = requests.get(url)
     data = response.json()
-    rank = "N/A"
+    rank = "Unranked"
+    wins = 0
+    losses = 0
     for block in data:
         if block["queueType"] == "RANKED_SOLO_5x5":
             if block["tier"] == "CHALLENGER" or block["tier"] == "GRANDMASTER" or block["tier"] == "MASTER":
                 rank = block["tier"]
             else:
                 rank = block["tier"] + " " + block["rank"]
-    return summoner_id, rank
+            wins = block["wins"]
+            losses = block["losses"]
+    return summoner_id, rank, wins, losses
 
 def get_ritoid(puuid):
     url = f'https://americas.api.riotgames.com/riot/account/v1/accounts/by-puuid/{puuid}?api_key={api_key}'
@@ -71,8 +75,8 @@ def create_player():
     else:
         puuid = data["puuid"]
         riot_id = data["gameName"] + "#" + data["tagLine"]
-        summoner_id, rank = get_db_info(puuid)
-    new_player = Player(riot_id = riot_id, puuid = puuid, summoner_id = summoner_id, rank = rank)
+        summoner_id, rank, wins, losses = get_db_info(puuid)
+    new_player = Player(riot_id = riot_id, puuid = puuid, summoner_id = summoner_id, rank = rank, wins = wins, losses = losses)
     try:
         db.session.add(new_player)
         db.session.commit()
@@ -108,7 +112,7 @@ def find_champ(player_id, match_id):
         return jsonify({"message": "Player not found in match"}), 404
     return jsonify({"champion": data['info']['participants'][player_idx]['championName']}), 200
 
-@app.route("/update_player/<player_id>", methods=["PATCH"])
+@app.route("/update_player/<player_id>", methods=["GET", "PATCH"])
 def update_player(player_id):
     player = Player.query.get(player_id)
     if not player:
@@ -116,11 +120,13 @@ def update_player(player_id):
     json_player = player.to_json()
     puuid = json_player["puuid"]
     riot_id = get_ritoid(puuid)
-    summoner_id, rank = get_db_info(puuid)
+    summoner_id, rank, wins, losses = get_db_info(puuid)
 
     player.riot_id = riot_id
     player.summoner_id = summoner_id
     player.rank = rank
+    player.wins = wins
+    player.losses = losses
 
     db.session.commit()
 

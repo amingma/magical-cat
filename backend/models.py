@@ -6,6 +6,8 @@ class Player(db.Model):
     puuid = db.Column(db.String(120), unique=True, nullable=False)
     summoner_id = db.Column(db.String(120), unique=True, nullable=False)
     rank = db.Column(db.String(80), unique=False, nullable=False)
+    wins = db.Column(db.Integer, nullable = False)
+    losses = db.Column(db.Integer, nullable = False)
 
     def to_json(self):
         return {
@@ -14,4 +16,6 @@ class Player(db.Model):
             "puuid": self.puuid,
             "summonerID": self.summoner_id,
             "rank": self.rank,
+            "wins": self.wins,
+            "losses": self.losses
         }

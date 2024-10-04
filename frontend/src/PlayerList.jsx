@@ -42,6 +42,7 @@ export default function PlayerList({players, updateCallback, viewFunc, curPlayer
                 <tr>
                     <th>Player Tag</th>
                     <th>Player Rank</th>
+                    <th>Win-Loss</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -50,6 +51,7 @@ export default function PlayerList({players, updateCallback, viewFunc, curPlayer
                     <tr key={player.id}> 
                         <td>{player.riotID} </td>
                         <td>{player.rank}</td>
+                        <td>{player.wins + "-" + player.losses}</td>
                         <td>
                             <div className="buttonHolder">
                                 <button onClick = {()=>onDelete(player.id)}>Delete</button>
