@@ -42,7 +42,7 @@ export default function PlayerList({players, updateCallback, viewFunc, curPlayer
                 <tr>
                     <th>Player Tag</th>
                     <th>Player Rank</th>
-                    <th>Win-Loss</th>
+                    <th>Season Win-Loss</th>
                     <th>Action</th>
                 </tr>
             </thead>

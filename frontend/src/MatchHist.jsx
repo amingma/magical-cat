@@ -2,7 +2,7 @@ import {useState, useEffect} from "react"
 
 export default function MatchHist({player}) {
     const [matches, setMatches] = useState([])
-    const [curMatchIdx, setCurMatchIdx]  = useState()
+    const [curMatchIdx, setCurMatchIdx]  = useState(0)
     const [curChamp, setCurChamp] = useState()
     const [curDate, setCurDate] = useState()
     const [curDuration, setCurDuration] = useState()
@@ -13,11 +13,11 @@ export default function MatchHist({player}) {
             }
             const response = await fetch(`http://127.0.0.1:5000/get_matches/${player.id}`, options)
             const data = await response.json()
-            console.log(data.matches)
             setMatches(data.matches)
             setCurMatchIdx(0)
         }
         catch (error) {
+            console.log('wait')
             alert(error)
         }
     }
@@ -44,7 +44,7 @@ export default function MatchHist({player}) {
 
     useEffect(()=>{
         matchInfo()
-    }, [player, curMatchIdx])
+    }, [matches, curMatchIdx])
 
     function goPrevMatch() {
         setCurMatchIdx(curMatchIdx - 1);
