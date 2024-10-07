@@ -4,6 +4,8 @@ export default function MatchHist({player}) {
     const [matches, setMatches] = useState([])
     const [curMatchIdx, setCurMatchIdx]  = useState()
     const [curChamp, setCurChamp] = useState()
+    const [curDate, setCurDate] = useState()
+    const [curDuration, setCurDuration] = useState()
     async function queryMatches() {
         try {
             const options = {
@@ -20,14 +22,16 @@ export default function MatchHist({player}) {
         }
     }
 
-    async function findChamp() {
+    async function matchInfo() {
         try {
             const options = {
                 'method':'GET'
             }
-            const response = await fetch(`http://127.0.0.1:5000/find_champ/${player.id}/${matches[curMatchIdx]}`, options)
+            const response = await fetch(`http://127.0.0.1:5000/match_info/${player.id}/${matches[curMatchIdx]}`, options)
             const data = await response.json()
             setCurChamp(data["champion"])
+            setCurDate(data["start"])
+            setCurDuration(data["duration"])
         }
         catch (error) {
             alert(error)
@@ -39,7 +43,7 @@ export default function MatchHist({player}) {
     }, [player])
 
     useEffect(()=>{
-        findChamp()
+        matchInfo()
     }, [player, curMatchIdx])
 
     function goPrevMatch() {
@@ -55,11 +59,12 @@ export default function MatchHist({player}) {
             {player && 
             <div>
                 <div>{"You are currently " + player.rank}</div>
-                <div>{"Current match: " + matches[curMatchIdx]}</div>
+                <div>{"Current match: " + curDate}</div>
+                <div>{"Match duration: " + curDuration}</div>
                 <div>{curMatchIdx!=0 && <button onClick={()=>goPrevMatch()}>Prev Match</button>} 
                      {curMatchIdx!=matches.length-1 && <button onClick={()=>goNextMatch()}>Next Match</button>}
                 </div>    
-                <div>{"Current champ: " + curChamp}</div>
+                <div>{"Champion played: " + curChamp}</div>
                 {curChamp && 
                     <div>
                         <img src={`./champion/${curChamp}.png`} alt="Champion icon" />

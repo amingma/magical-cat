@@ -1,6 +1,7 @@
 from flask import request, jsonify
 from config import app, db, api_key
 from models import Player
+from datetime import datetime
 import requests
 
 def get_db_info(puuid):
@@ -93,8 +94,8 @@ def delete_player(player_id):
     db.session.commit()
     return (jsonify({"message": "Player successfully deleted"}), 200)
 
-@app.route("/find_champ/<player_id>/<match_id>", methods=["GET"])
-def find_champ(player_id, match_id):
+@app.route("/match_info/<player_id>/<match_id>", methods=["GET"])
+def match_info(player_id, match_id):
     player = Player.query.get(player_id)
     if not player:
         return (jsonify({"message": "Player not found"})), 404
@@ -110,7 +111,17 @@ def find_champ(player_id, match_id):
             player_idx = i
     if player_idx == -1:
         return jsonify({"message": "Player not found in match"}), 404
-    return jsonify({"champion": data['info']['participants'][player_idx]['championName']}), 200
+    min = int(data['info']['gameDuration']/60)
+    sec = data['info']['gameDuration'] % 60
+    if (sec == 0):
+        duration = f'{min} minutes'
+    elif (sec == 1):
+        duration = f'{min} minutes and 1 second'
+    else:
+        duration = f'{min} minutes and {sec} seconds'
+    return jsonify({"champion": data['info']['participants'][player_idx]['championName'],
+                    "start":datetime.fromtimestamp(data['info']['gameCreation']*1e-3).strftime('%m/%d/%Y %I:%m%p %z'),
+                    "duration":duration}), 200
 
 @app.route("/update_player/<player_id>", methods=["GET", "PATCH"])
 def update_player(player_id):
