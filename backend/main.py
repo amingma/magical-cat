@@ -119,8 +119,9 @@ def match_info(player_id, match_id):
         duration = f'{min} minutes and 1 second'
     else:
         duration = f'{min} minutes and {sec} seconds'
+        print(datetime.fromtimestamp(data['info']['gameCreation']*1e-3).strftime('%m/%d/%Y %I:%m%p %z'))
     return jsonify({"champion": data['info']['participants'][player_idx]['championName'],
-                    "start":datetime.fromtimestamp(data['info']['gameCreation']*1e-3).strftime('%m/%d/%Y %I:%m%p %z'),
+                    "start":datetime.fromtimestamp(data['info']['gameCreation']*1e-3).strftime('%m/%d/%Y %I:%M%p %z'),
                     "duration":duration}), 200
 
 @app.route("/update_player/<player_id>", methods=["GET", "PATCH"])
